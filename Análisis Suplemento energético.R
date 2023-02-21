@@ -190,9 +190,7 @@ mari <- as.data.frame(table(Marizol_datos_último$Mortalidad, Marizol_datos_últ
                             Marizol_datos_último$`Mortalidad (semana)`))
 View(mari)
 
-mari <- mari[-c(1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 13, 15, 
-                17, 19, 21, 23,
-                25, 27, 29, 31, 33, 35, 37, 39), ] # eliminar filas
+mari <- mari[!(mari$Var1 == "No"), ] # eliminar filas
 View(mari)
 
 mari <- mari[, -1] #eliminar columna
@@ -204,7 +202,25 @@ marisol <- table(mari$Var2, mari$Freq)
 
 plot(mari$Var2, mari$Freq, type = "s", lty=1,
      ylab="Lechones fallecidos", xlab="Tratamientos",
-     col=c(2,3,4,5), horizontal = F, las=1)
+     col=c(2,3,4,5), horizontal = F, las=1, yaxt = "n")
+
+axis(2, at = c(1:15), las=1)
+
+Marizol_datos_último$`Tratamiento (ml)`<- as.factor(Marizol_datos_último$`Tratamiento (ml)`)
+Marizol_datos_último$`Tratamiento (ml)`<- factor(Marizol_datos_último$`Tratamiento (ml)`,
+                                                 levels = levels(Marizol_datos_último$`Tratamiento (ml)`),
+                                                 labels = c("0 ml","1 ml","1,5 ml", "2 ml"),
+                                                 ordered = T)
+
+Marizol_datos_último$Mortalidad <- as.factor(Marizol_datos_último$Mortalidad)
+Marizol_datos_último$Mortalidad <- factor(Marizol_datos_último$Mortalidad,
+                                                 levels = levels(Marizol_datos_último$Mortalidad),
+                                                 labels = c("Si","No"),
+                                                 ordered = f)
+
+chisq.test(Marizol_datos_último$Mortalidad, 
+           Marizol_datos_último$`Tratamiento (ml)`, correct=T)
+
 
 Trat0 <- c(0, 4, 0, 1, 1)
 Trat1 <- c(0, 4, 0, 0, 0)
