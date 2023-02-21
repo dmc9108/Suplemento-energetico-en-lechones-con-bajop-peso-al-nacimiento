@@ -206,20 +206,7 @@ plot(mari$Var2, mari$Freq, type = "s", lty=1,
 
 axis(2, at = c(1:15), las=1)
 
-Marizol_datos_último$`Tratamiento (ml)`<- as.factor(Marizol_datos_último$`Tratamiento (ml)`)
-Marizol_datos_último$`Tratamiento (ml)`<- factor(Marizol_datos_último$`Tratamiento (ml)`,
-                                                 levels = levels(Marizol_datos_último$`Tratamiento (ml)`),
-                                                 labels = c("0 ml","1 ml","1,5 ml", "2 ml"),
-                                                 ordered = T)
 
-Marizol_datos_último$Mortalidad <- as.factor(Marizol_datos_último$Mortalidad)
-Marizol_datos_último$Mortalidad <- factor(Marizol_datos_último$Mortalidad,
-                                                 levels = levels(Marizol_datos_último$Mortalidad),
-                                                 labels = c("Si","No"),
-                                                 ordered = f)
-
-chisq.test(Marizol_datos_último$Mortalidad, 
-           Marizol_datos_último$`Tratamiento (ml)`, correct=T)
 
 
 Trat0 <- c(0, 4, 0, 1, 1)
