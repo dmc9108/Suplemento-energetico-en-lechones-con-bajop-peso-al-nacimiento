@@ -197,10 +197,15 @@ mari <- mari[, -1] #eliminar columna
 View(mari)
 
 mari$Var3 <- as.numeric(mari$Var3)
+mari$freq <- as.numeric(mari$Freq)
 
 marisol <- table(mari$Var2, mari$Freq)
 
-plot(mari$Var2, mari$Freq, type = "s", lty=1,
+barplot(marisol)
+        
+        
+        
+        , type = "s", lty=1,
      ylab="Lechones fallecidos", xlab="Tratamientos",
      col=c(2,3,4,5), horizontal = F, las=1, yaxt = "n")
 
