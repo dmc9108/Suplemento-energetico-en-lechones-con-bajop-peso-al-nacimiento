@@ -64,7 +64,7 @@ bartlett.test(Marizol_datos_último$`Ganancia de peso`~
 bartlett.test(Marizol_datos_último$`Ganancia media diaria`~
                 Marizol_datos_último$`Tratamiento (ml)`)
 
-#Valores atÃ­picos
+#Valores atipicos
 Marizol_datos_último$Sexo <- as.factor(Marizol_datos_último$Sexo)
 
 Marizol_datos_último$`Tratamiento (ml)`<- as.factor(Marizol_datos_último$`Tratamiento (ml)`)
@@ -73,12 +73,21 @@ Marizol_datos_último$`Tratamiento (ml)`<- factor(Marizol_datos_último$`Tratami
                                                   labels = c("0 ml","1 ml","1,5 ml", "2 ml"),
                                                   ordered = T)
 
-boxplot(Marizol_datos_último$`Peso al nacimiento`)
+boxplot(Marizol_datos_último$`Peso al nacimiento`, col = 2)
+t.test(Marizol_datos_último$`Peso al nacimiento`)
+
+
 boxplot(Marizol_datos_último$`Semana 1`)
 boxplot(Marizol_datos_último$`Semana 2`)
 boxplot(Marizol_datos_último$`Semana 3`)
-boxplot(Marizol_datos_último$`Peso al destete`)
-boxplot(Marizol_datos_último$`Ganancia de peso`)
+boxplot(Marizol_datos_último$`Peso al destete`, col=2)
+t.test(Marizol_datos_último$`Peso al destete`)
+
+boxplot(Marizol_datos_último$`Ganancia de peso`, col = 2)
+t.test(Marizol_datos_último$`Ganancia de peso`)
+
+boxplot(Marizol_datos_último$`Ganancia media diaria`, col = 2)
+t.test(Marizol_datos_último$`Ganancia media diaria`)
 
 boxplot(Marizol_datos_último$`Peso al nacimiento`~Marizol_datos_último$`Tratamiento (ml)`,
         xlab="Tratamientos", ylab="Peso al nacimiento", 
@@ -146,7 +155,8 @@ t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$
 t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
 t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$`Tratamiento (ml)`==2))
 
-
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$Sexo=="Macho"))
 
 modelo <- aov (Marizol_datos_último$`Peso al destete`~Marizol_datos_último$`Tratamiento (ml)` * Marizol_datos_último$Sexo, data = Marizol_datos_último)
 summary(modelo)
@@ -156,6 +166,8 @@ t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$`Tr
 t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
 t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$`Tratamiento (ml)`==2))
 
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$Sexo=="Macho"))
 
 modelo <- aov (Marizol_datos_último$`Ganancia de peso`~Marizol_datos_último$`Tratamiento (ml)` * Marizol_datos_último$Sexo, data = Marizol_datos_último)
 summary(modelo)
@@ -165,6 +177,8 @@ t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$`T
 t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
 t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$`Tratamiento (ml)`==2))
 
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$Sexo=="Macho"))
 
 modelo <- aov (Marizol_datos_último$`Ganancia media diaria`~Marizol_datos_último$`Tratamiento (ml)`* Marizol_datos_último$Sexo, data = Marizol_datos_último)
 summary(modelo)
@@ -173,6 +187,9 @@ t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_últi
 t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$`Tratamiento (ml)`==1))
 t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
 t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$`Tratamiento (ml)`==2))
+
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$Sexo=="Macho"))
 
 # Mortalidad
 library(readxl)
@@ -196,53 +213,95 @@ View(mari)
 mari <- mari[, -1] #eliminar columna
 View(mari)
 
-mari$Var3 <- as.numeric(mari$Var3)
-mari$freq <- as.numeric(mari$Freq)
+mari$Var3 <- as.vector(mari$Var3)
+mari$Freq <- as.vector(mari$Freq)
 
-marisol <- table(mari$Var2, mari$Freq)
+install.packages("dplyr")
+library(dplyr)
 
-barplot(marisol)
-        
-        
-        
-        , type = "s", lty=1,
-     ylab="Lechones fallecidos", xlab="Tratamientos",
-     col=c(2,3,4,5), horizontal = F, las=1, yaxt = "n")
+filter(mari, Var2=="1 ml")
 
-axis(2, at = c(1:15), las=1)
+T0 <- filter(mari, Var2=="0 ml")
+T1 <- filter(mari, Var2=="1 ml")
+T2 <- filter(mari, Var2=="1,5 ml")
+T3 <- filter(mari, Var2=="2 ml")
+
+datos <- data.frame("0 ml"=T0, "1 ml"=T1, "1,5 ml"=T2, "2 ml"=T3)   
+View(datos)
+
+install.packages("MASS")
+library(MASS)
+
+matplot(datos, type = "l", 
+        xlab = "Semana", ylab = "Lechones muertos",
+        col = c("black" ,"blue","red", "green"),
+        lty = 2, lwd = 2, las = 1, xlim = c(1,4), xaxt = "n")
 
 
-
-
-Trat0 <- c(0, 4, 0, 1, 1)
-Trat1 <- c(0, 4, 0, 0, 0)
-Trat1_5 <- c(0, 1, 0, 1, 0)
-Trat2 <- c(0, 15, 1, 0, 0)
-
-Trat <- data.frame("0 ml" = Trat0, 
-                   "1 ml" = Trat1, 
-                   "1,5 ml" = Trat1_5,
-                   "2 ml" = Trat2)
-Sem <- c(0, 1, 2, 3, 4)
-
-View(Trat)
-
-matplot(Sem, Trat, , type = "l",
-        xlab = "Semanas", ylab = "Cantidad (g)",
-        col = c("black","blue","red", "green"), xaxt = "n",
-        lty = 2, lwd = 2, las = 1)
-
-grid(nx = NA, ny = NULL, lwd = 1, lty = 1, col = ("gray"))
-
-axis(1, at = c(0, 1, 2, 3, 4))
+axis(1, at = c(1, 2, 3, 4))
 
 legend(x = "top",                            
        legend = c("0 ml", "1 ml", "1,5 ml", "2 ml"),     
        lty = 1,                                 
-       col = c("black","blue","red", "green"),          
+       col = c("black" ,"blue","red", "green"),          
        lwd = 2,
        inset = c(0, -0.15),
        xpd = TRUE,
        horiz = TRUE,
-       bty = "n") 
+       bty = "n")      
+
+
+# Morbilidad
+library(readxl)
+Marizol_datos_último <- read_excel("F:/Daniel/Rstudio/Marizol datos último.xlsx", 
+                                   range = "A1:V260")
+View(Marizol_datos_último)
+
+Marizol_datos_último$`Tratamiento (ml)`<- as.factor(Marizol_datos_último$`Tratamiento (ml)`)
+Marizol_datos_último$`Tratamiento (ml)`<- factor(Marizol_datos_último$`Tratamiento (ml)`,
+                                                 levels = levels(Marizol_datos_último$`Tratamiento (ml)`),
+                                                 labels = c("0 ml","1 ml","1,5 ml", "2 ml"),
+                                                 ordered = T)
+
+mari <- as.data.frame(table(Marizol_datos_último$Morbilidad, Marizol_datos_último$`Tratamiento (ml)`,
+                            Marizol_datos_último$`Morbilidad (semana)`))
+View(mari)
+
+mari <- mari[!(mari$Var1 == "No"), ] # eliminar filas
+View(mari)
+
+mari <- mari[, -1] #eliminar columna
+View(mari)
+
+library(dplyr)
+
+T0 <- filter(mari, Var2=="0 ml")
+T1 <- filter(mari, Var2=="1 ml")
+T2 <- filter(mari, Var2=="1,5 ml")
+T3 <- filter(mari, Var2=="2 ml")
+
+datos <- data.frame("0 ml"=T0, "1 ml"=T1, "1,5 ml"=T2, "2 ml"=T3)   
+View(datos)
+
+
+library(MASS)
+
+matplot(datos, type = "l", 
+        xlab = "Semana", ylab = "Lechones enfermos",
+        col = c("black" ,"blue","red", "green"),
+        lty = 2, lwd = 2, las = 1, xlim = c(1,3), xaxt = "n")
+
+
+axis(1, at = c(1, 2, 3))
+
+legend(x = "top",                            
+       legend = c("0 ml", "1 ml", "1,5 ml", "2 ml"),     
+       lty = 1,                                 
+       col = c("black" ,"blue","red", "green"),          
+       lwd = 2,
+       inset = c(0, -0.15),
+       xpd = TRUE,
+       horiz = TRUE,
+       bty = "n")      
+
 
