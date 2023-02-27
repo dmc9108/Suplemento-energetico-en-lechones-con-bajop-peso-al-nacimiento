@@ -2,7 +2,7 @@
 
 library(readxl)
 Marizol_datos_último <- read_excel("F:/Daniel/Rstudio/Marizol datos último.xlsx", 
-                                    range = "A1:V260")
+                                    range = "A1:v260")
 View(Marizol_datos_último)
 
 
@@ -194,7 +194,7 @@ t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_últi
 # Mortalidad
 library(readxl)
 Marizol_datos_último <- read_excel("F:/Daniel/Rstudio/Marizol datos último.xlsx", 
-                                    range = "A1:V260")
+                                    range = "A1:v260")
 View(Marizol_datos_último)
 
 Marizol_datos_último$`Tratamiento (ml)`<- as.factor(Marizol_datos_último$`Tratamiento (ml)`)
@@ -213,13 +213,8 @@ View(mari)
 mari <- mari[, -1] #eliminar columna
 View(mari)
 
-mari$Var3 <- as.vector(mari$Var3)
-mari$Freq <- as.vector(mari$Freq)
-
 install.packages("dplyr")
 library(dplyr)
-
-filter(mari, Var2=="1 ml")
 
 T0 <- filter(mari, Var2=="0 ml")
 T1 <- filter(mari, Var2=="1 ml")
@@ -229,40 +224,42 @@ T3 <- filter(mari, Var2=="2 ml")
 datos <- data.frame("0 ml"=T0, "1 ml"=T1, "1,5 ml"=T2, "2 ml"=T3)   
 View(datos)
 
+datos <- datos[-1, ]
+
 install.packages("MASS")
 library(MASS)
 
-matplot(datos, type = "l", 
+Tratamiento_0 <- c(4, 4, 5, 5)
+Tratamiento_1 <- c(4, 4, 4, 4)
+Tratamiento_2 <- c(1, 1, 2, 2)
+Tratamiento_3 <- c(15, 16, 16, 16)
+semana <- c(1,2,3,4)
+
+datos <- data.frame(Tratamiento_0, Tratamiento_1, Tratamiento_2, Tratamiento_3)
+
+matplot(semana, datos, type = "l", 
         xlab = "Semana", ylab = "Lechones muertos",
-        col = c("black" ,"blue","red", "green"),
-        lty = 2, lwd = 2, las = 1, xlim = c(1,4), xaxt = "n")
+        col = c(1:4),
+        lty = 2, lwd = 2, las = 1, xlim = c(1,4), xaxt = "n", 
+        lend = par("lend"), add = FALSE, bg = NA,
+        cex = NULL)
 
+matpoints(datos, type = "p", lty = 1, lwd = 1, pch = 16,
+          col = c(1:4))
 
-axis(1, at = c(1, 2, 3, 4))
+axis(1, at = c(0,1, 2, 3, 4))
 
 legend(x = "top",                            
        legend = c("0 ml", "1 ml", "1,5 ml", "2 ml"),     
        lty = 1,                                 
-       col = c("black" ,"blue","red", "green"),          
+       col = c(1:4),          
        lwd = 2,
        inset = c(0, -0.15),
        xpd = TRUE,
        horiz = TRUE,
        bty = "n")      
 
-
 # Morbilidad
-library(readxl)
-Marizol_datos_último <- read_excel("F:/Daniel/Rstudio/Marizol datos último.xlsx", 
-                                   range = "A1:V260")
-View(Marizol_datos_último)
-
-Marizol_datos_último$`Tratamiento (ml)`<- as.factor(Marizol_datos_último$`Tratamiento (ml)`)
-Marizol_datos_último$`Tratamiento (ml)`<- factor(Marizol_datos_último$`Tratamiento (ml)`,
-                                                 levels = levels(Marizol_datos_último$`Tratamiento (ml)`),
-                                                 labels = c("0 ml","1 ml","1,5 ml", "2 ml"),
-                                                 ordered = T)
-
 mari <- as.data.frame(table(Marizol_datos_último$Morbilidad, Marizol_datos_último$`Tratamiento (ml)`,
                             Marizol_datos_último$`Morbilidad (semana)`))
 View(mari)
@@ -283,25 +280,37 @@ T3 <- filter(mari, Var2=="2 ml")
 datos <- data.frame("0 ml"=T0, "1 ml"=T1, "1,5 ml"=T2, "2 ml"=T3)   
 View(datos)
 
+datos <- datos[-1, ]
 
 library(MASS)
 
-matplot(datos, type = "l", 
-        xlab = "Semana", ylab = "Lechones enfermos",
-        col = c("black" ,"blue","red", "green"),
-        lty = 2, lwd = 2, las = 1, xlim = c(1,3), xaxt = "n")
+Tratamiento_0 <- c(9, 9, 13, 13)
+Tratamiento_1 <- c(5, 5, 5, 5)
+Tratamiento_2 <- c(1, 1, 2, 2)
+Tratamiento_3 <- c(1, 1, 1, 1)
+semana <- c(1,2,3,4)
 
+datos <- data.frame(Tratamiento_0, Tratamiento_1, Tratamiento_2, Tratamiento_3)
 
-axis(1, at = c(1, 2, 3))
+matplot(semana, datos, type = "l", 
+        xlab = "Semana", ylab = "Lechones muertos",
+        col = c(1:4),
+        lty = 2, lwd = 2, las = 1, xlim = c(1,4), xaxt = "n", 
+        lend = par("lend"), add = FALSE, bg = NA,
+        cex = NULL)
+
+matpoints(datos, type = "p", lty = 1, lwd = 1, pch = 16,
+          col = c(1:4))
+
+axis(1, at = c(0,1, 2, 3, 4))
 
 legend(x = "top",                            
        legend = c("0 ml", "1 ml", "1,5 ml", "2 ml"),     
        lty = 1,                                 
-       col = c("black" ,"blue","red", "green"),          
+       col = c(1:4),          
        lwd = 2,
        inset = c(0, -0.15),
        xpd = TRUE,
        horiz = TRUE,
        bty = "n")      
-
 
