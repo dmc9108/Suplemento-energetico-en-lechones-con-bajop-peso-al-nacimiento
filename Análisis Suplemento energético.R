@@ -293,7 +293,7 @@ semana <- c(1,2,3,4)
 datos <- data.frame(Tratamiento_0, Tratamiento_1, Tratamiento_2, Tratamiento_3)
 
 matplot(semana, datos, type = "l", 
-        xlab = "Semana", ylab = "Lechones muertos",
+        xlab = "Semana", ylab = "Lechones enfermos",
         col = c(1:4),
         lty = 2, lwd = 2, las = 1, xlim = c(1,4), xaxt = "n", 
         lend = par("lend"), add = FALSE, bg = NA,
@@ -314,3 +314,53 @@ legend(x = "top",
        horiz = TRUE,
        bty = "n")      
 
+Marizol_datos_último$`Mortalidad (causa)` <- factor(Marizol_datos_último$`Mortalidad (causa)`)
+Marizol_datos_último$`Tratamiento (ml)` <- factor(Marizol_datos_último$`Tratamiento (ml)`)
+
+
+
+install.packages("openxlsx")
+library(openxlsx)
+
+data <- as.data.frame(table(Marizol_datos_último$`Mortalidad (causa)`,
+                            Marizol_datos_último$`Tratamiento (ml)`))
+View(data)
+write.xlsx(data, "mari.xlsx")
+
+data <- as.data.frame(table(Marizol_datos_último$`Morbilidad (causa)`,
+                            Marizol_datos_último$`Tratamiento (ml)`))
+View(data)
+write.xlsx(data, "marisol.xlsx")
+
+install.packages("plotrix")
+library(plotrix)
+
+
+barplot(table(Marizol_datos_último$Mortalidad, 
+              Marizol_datos_último$`Tratamiento (ml)`),
+        col = c(4,2), xlab = "Tratamientos", ylab = "Mortalidad")
+
+legend(x = "top",                            
+       legend = c("Si", "No"),     
+       lty = 1,                                 
+       col = c(4,2),          
+       lwd = 2,
+       inset = c(0, -0.15),
+       xpd = TRUE,
+       horiz = TRUE,
+       bty = "n") 
+
+
+barplot(table(Marizol_datos_último$Morbilidad, 
+              Marizol_datos_último$`Tratamiento (ml)`),
+        col = c(4,2), xlab = "Tratamientos", ylab = "Morbilidad")
+
+legend(x = "top",                            
+       legend = c("Si", "No"),     
+       lty = 1,                                 
+       col = c(4,2),          
+       lwd = 2,
+       inset = c(0, -0.15),
+       xpd = TRUE,
+       horiz = TRUE,
+       bty = "n") 
