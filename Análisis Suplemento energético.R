@@ -2,7 +2,7 @@
 
 library(readxl)
 Marizol_datos_último <- read_excel("F:/Daniel/Rstudio/Marizol datos último.xlsx", 
-                                    range = "A1:v260")
+                                    range = "A1:v261")
 View(Marizol_datos_último)
 
 
@@ -364,3 +364,73 @@ legend(x = "top",
        xpd = TRUE,
        horiz = TRUE,
        bty = "n") 
+
+chisq.test(table(Marizol_datos_último$Morbilidad, 
+      Marizol_datos_último$`Tratamiento (ml)`))
+
+# cajas interacción tratamientos
+
+boxplot(Marizol_datos_último$`Peso al nacimiento`~Marizol_datos_último$`Interacción tratamientos`,
+        xlab="Peso al nacimiento", ylab="Tratamientos-Sexo", 
+        col=c(2,3,4,5,6,7,8,9), horizontal = T, las=1)
+
+boxplot(Marizol_datos_último$`Peso al destete`~Marizol_datos_último$`Interacción tratamientos`,
+        xlab="Tratamientos", ylab="Peso al destete", 
+        col=c(2,3,4,5), horizontal = T, las=1)
+
+boxplot(Marizol_datos_último$`Ganancia de peso`~Marizol_datos_último$`Interacción tratamientos`,
+        xlab="Tratamientos", ylab="Ganancia de peso", 
+        col=c(2,3,4,5), horizontal = T, las=1)
+
+boxplot(Marizol_datos_último$`Ganancia media diaria`~Marizol_datos_último$`Interacción tratamientos`,
+        xlab="Tratamientos", ylab="Ganancia media diaria", 
+        col=c(2,3,4,5), horizontal = T, las=1)
+
+
+
+
+
+
+modelo <- aov (Marizol_datos_último$`Peso al nacimiento`~Marizol_datos_último$`Interacción tratamientos`)
+summary(anova)
+
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$`Interacción tratamientos`=="0 H"))
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$`Tratamiento (ml)`==1))
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$`Tratamiento (ml)`==2))
+
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Peso al nacimiento`, Marizol_datos_último$Sexo=="Macho"))
+
+modelo <- aov (Marizol_datos_último$`Peso al destete`~Marizol_datos_último$`Tratamiento (ml)` * Marizol_datos_último$Sexo, data = Marizol_datos_último)
+summary(modelo)
+
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$`Tratamiento (ml)`==0))
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$`Tratamiento (ml)`==1))
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$`Tratamiento (ml)`==2))
+
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Peso al destete`, Marizol_datos_último$Sexo=="Macho"))
+
+modelo <- aov (Marizol_datos_último$`Ganancia de peso`~Marizol_datos_último$`Tratamiento (ml)` * Marizol_datos_último$Sexo, data = Marizol_datos_último)
+summary(modelo)
+
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$`Tratamiento (ml)`==0))
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$`Tratamiento (ml)`==1))
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$`Tratamiento (ml)`==2))
+
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Ganancia de peso`, Marizol_datos_último$Sexo=="Macho"))
+
+modelo <- aov (Marizol_datos_último$`Ganancia media diaria`~Marizol_datos_último$`Tratamiento (ml)`* Marizol_datos_último$Sexo, data = Marizol_datos_último)
+summary(modelo)
+
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$`Tratamiento (ml)`==0))
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$`Tratamiento (ml)`==1))
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$`Tratamiento (ml)`==1.5))
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$`Tratamiento (ml)`==2))
+
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$Sexo=="Hembra"))
+t.test(subset(Marizol_datos_último$`Ganancia media diaria`, Marizol_datos_último$Sexo=="Macho"))
